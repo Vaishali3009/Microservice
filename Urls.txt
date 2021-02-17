@@ -1,0 +1,19 @@
+
+
+
+Currency Conversion  :         http://localhost:8100/currency-conversion/from/AUR/to/INR/quantity/5
+Currency Exchange    :		http://localhost:8000/currency-exchange/from/AUR/to/INR
+Currency Echange     :		http://localhost:8001/currency-exchange/from/AUR/to/INR
+
+
+
+
+Currency Conversion  :         http://localhost:8765/currency-conversion/from/AUR/to/INR/quantity/5
+Currency Exchange    :		http://localhost:8765/currency-exchange/from/AUR/to/INR
+Currency Echange     :		http://localhost:8765/currency-exchange/from/AUR/to/INR
+
+Eureka Server:       : 		http://localhost:8762/
+
+
+
+
