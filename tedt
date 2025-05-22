@@ -1,0 +1,198 @@
+package com.rbs.bdd.application.service;
+
+
+import com.rbs.bdd.application.exception.SchemaValidationException;
+import com.rbs.bdd.application.port.out.AccountValidationPort;
+import com.rbs.bdd.domain.enums.AccountStatus;
+import com.rbs.bdd.domain.enums.ModulusCheckStatus;
+import com.rbs.bdd.domain.enums.SwitchingStatus;
+import com.rbs.bdd.generated.*;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.lang.Exception;
+import java.util.UUID;
+import java.util.Optional;
+
+/**
+ *  Service class responsible for validating SOAP schema and applying business rules
+ *  based on identifier and code value in the incoming SOAP request.
+ *  This class reads a  SOAP response XML template, modifies specific fields
+ *  based on matched scenarios, and returns the updated SOAP message as a response.
+ *  Business rule scenarios include determining account status, switching status,
+ *  and modulus check result based on the request parameters like identifier and code value.
+ */
+@Service @RequiredArgsConstructor public class AccountValidationService implements AccountValidationPort {
+    private static final Logger logger = LoggerFactory.getLogger(AccountValidationService.class);
+
+    /**
+
+     The schema validation is done by  Spring WS configuration. No implementation is required.
+     @param request the SOAP request to validate */
+    @Override public void validateSchema(ValidateArrangementForPaymentRequest request)
+    {
+        logger.info("Schema validation completed (handled by Spring WS interceptor)");
+    }
+
+    /**
+     Loads the  SOAP response XML, evaluates request parameters, applies business rules,
+     modifies relevant response fields, and writes the final SOAP response back.
+     @param request the incoming SOAP request
+     @param message the SOAP WebServiceMessage to write the modified response to
+     */
+    @Override public void validateBusinessRules(ValidateArrangementForPaymentRequest request, WebServiceMessage message) { try { InputStream xml = getClass().getClassLoader().getResourceAsStream("static-response/response1.xml"); if (xml == null) throw new SchemaValidationException("response1.xml not found");
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(xml);
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        RequestParams params = extractRequestDetails(request);
+        determineResponseConfig(params).ifPresent(config -> {
+            try {
+                applyResponse(doc, xpath, config);
+            } catch (Exception e) {
+                throw new SchemaValidationException("Failed to apply response config", e);
+            }
+        });
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(out));
+
+        ((SaajSoapMessage) message).getSaajMessage().getSOAPPart()
+                .setContent(new StreamSource(new ByteArrayInputStream(out.toByteArray())));
+    }
+    catch (Exception e)
+    {
+        logger.error("Error in validateBusinessRules: {}", e.getMessage(), e);
+        throw new SchemaValidationException("Business rule processing failed", e);
+    }
+    }
+
+
+    /**
+     Extracts identifier, codeValue, and digit count from the request.
+     @param request the incoming SOAP request
+     @return a structured {@code RequestParams} record */
+    private RequestParams extractRequestDetails(ValidateArrangementForPaymentRequest request)
+    {
+        String identifier = request.getArrangementIdentifier().getIdentifier();
+        String codeValue = request.getArrangementIdentifier().getContext().getCodeValue();
+        int length = identifier != null ? identifier.length() : 0;
+        return new RequestParams(identifier, codeValue, length);
+    }
+
+
+    /**
+     Determines which business rule scenario applies based on the input parameters.
+     @param params the structured input parameters from request
+     @return {@code Optional} containing the response field values to apply */
+    private Optional<ResponseConfig> determineResponseConfig(RequestParams params)
+    {
+        String id = params.identifier();
+        int len = params.numberOfDigits();
+        String code = params.codeValue();
+
+        if ((len == 22 && id.equals("GB29NWBK60161331926801")) || (len == 8 && id.equals("31926801")))
+        {
+            logger.info("Matched: Scenario 1");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_RESTRICTED, SwitchingStatus.SWITCHED, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 && id.equals("GB82WEST12345698765437")) || (len == 8 && id.equals("98765437")))
+        {
+            logger.info("Matched: Scenario 2");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_RESTRICTED, SwitchingStatus.NOT_SWITCHING, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 && id.equals("GB94BARC10201530093422")) || (len == 8 && id.equals("30093422")))
+        {
+            logger.info("Matched: Scenario 3");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_UNRESTRICTED, SwitchingStatus.SWITCHED, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 && id.equals("GB33BUKB20201555555567")) || (len == 14 && id.equals("55555567")))
+        {
+            logger.info("Matched: Scenario 4"); return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_UNRESTRICTED, SwitchingStatus.NOT_SWITCHING, ModulusCheckStatus.FAILED)); }
+
+        return Optional.empty();
+    }
+
+
+
+    /**
+     Applies the values from {@code ResponseConfig} to the response XML DOM using XPath.
+     @param doc the response XML DOM
+     @param xpath the XPath engine
+     @param config the configuration containing status values to apply
+     @throws Exception in case of XPath or DOM issues  */
+     private void applyResponse(Document doc, XPath xpath, ResponseConfig config) throws Exception
+     {
+         set(xpath, doc, "//[local-name()='transactionId']", generateTransactionId());
+         set(xpath, doc, "//[local-name()='accountingUnits']/[local-name()='status']/[local-name()='codeValue']", config.status().getValue());
+         set(xpath, doc, "//[local-name()='switchingStatus']/[local-name()='codeValue']", config.switching().getValue());
+         set(xpath, doc, "//[local-name()='modulusCheckStatus']/*[local-name()='codeValue']", config.modulus().getValue());
+     }
+
+
+     /**
+     Helper method to update the content of a node selected via XPath.
+     @param xpath the XPath instance
+     @param doc the DOM document
+     @param expr the XPath expression to locate the node
+     @param value the new text content to set
+     @throws Exception in case of evaluation failure */
+    private void set(XPath xpath, Document doc, String expr, String value) throws Exception
+    {
+        Node node = (Node) xpath.evaluate(expr, doc, XPathConstants.NODE);
+        if (node != null) node.setTextContent(value);
+    }
+
+
+    /**
+     Generates a random transaction ID based on UUID, formatted with required prefix and suffix.
+     @return a 40+ character transaction ID string */
+    private String generateTransactionId()
+    {
+        return "3flS" + UUID.randomUUID().toString().replace("-", "") + "h";
+    }
+
+
+    /**
+     Immutable record representing request fields to evaluate rules.
+     @param identifier the IBAN/account number
+     @param codeValue the account type
+     @param numberOfDigits length of the identifier */
+    private record RequestParams(String identifier, String codeValue, int numberOfDigits)
+    {
+
+    }
+    /**
+
+     Immutable record representing business rule results to apply in the SOAP response.
+     @param status the {@link AccountStatus} to set
+     @param switching the {@link SwitchingStatus} to set
+     @param modulus the {@link ModulusCheckStatus} to set */
+    private record ResponseConfig(AccountStatus status, SwitchingStatus switching, ModulusCheckStatus modulus) {
+
+    }
+}
