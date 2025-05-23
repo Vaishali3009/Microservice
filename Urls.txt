@@ -1,19 +1,283 @@
+2025-05-23T07:17:35.303+01:00  INFO 24232 --- [nio-8080-exec-1] c.r.b.a.s.AccountValidationService       : coming here
+2025-05-23T07:17:35.308+01:00 ERROR 24232 --- [nio-8080-exec-1] c.r.b.a.s.AccountValidationService       : Error in validateBusinessRules: Failed to apply response config
+
+com.rbs.bdd.application.exception.SchemaValidationException: Failed to apply response config
+        at com.rbs.bdd.application.service.AccountValidationService.lambda$validateBusinessRules$0(AccountValidationService.java:76) ~[classes/:na]
+        at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+        at com.rbs.bdd.application.service.AccountValidationService.validateBusinessRules(AccountValidationService.java:72) ~[classes/:na]
+        at com.rbs.bdd.application.service.PaymentOrchestrator.validateArrangementForPayment(PaymentOrchestrator.java:33) ~[classes/:na]
+        at com.rbs.bdd.infrastructure.soap.api.PaymentValidationSoapAdapter.validateArrangementForPayment(PaymentValidationSoapAdapter.java:47) ~[classes/:na]
+        at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+        at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+        at org.springframework.ws.server.endpoint.MethodEndpoint.invoke(MethodEndpoint.java:133) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter.invokeInternal(DefaultMethodEndpointAdapter.java:285) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.server.endpoint.adapter.AbstractMethodEndpointAdapter.invoke(AbstractMethodEndpointAdapter.java:54) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.server.MessageDispatcher.dispatch(MessageDispatcher.java:230) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.server.MessageDispatcher.receive(MessageDispatcher.java:174) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.transport.support.WebServiceMessageReceiverObjectSupport.handleConnection(WebServiceMessageReceiverObjectSupport.java:88) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter.handle(WebServiceMessageReceiverHandlerAdapter.java:60) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.ws.transport.http.MessageDispatcherServlet.doService(MessageDispatcherServlet.java:288) ~[spring-ws-core-4.0.10.jar:na]
+        at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.6.jar:6.2.6]
+        at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.6.jar:6.2.6]
+        at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.40.jar:6.0]
+        at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.6.jar:6.2.6]
+        at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.40.jar:6.0]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.6.jar:6.2.6]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.40.jar:10.1.40]
+        at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: javax.xml.xpath.XPathExpressionException: javax.xml.transform.TransformerException: A location step was expected following the '/' or '//' token.
+        at java.xml/com.sun.org.apache.xpath.internal.jaxp.XPathImpl.evaluate(XPathImpl.java:145) ~[na:na]
+        at com.rbs.bdd.application.service.AccountValidationService.set(AccountValidationService.java:174) ~[classes/:na]
+        at com.rbs.bdd.application.service.AccountValidationService.applyResponse(AccountValidationService.java:157) ~[classes/:na]
+        at com.rbs.bdd.application.service.AccountValidationService.lambda$validateBusinessRules$0(AccountValidationService.java:74) ~[classes/:na]
+        ... 56 common frames omitted
+Caused by: javax.xml.transform.TransformerException: A location step was expected following the '/' or '//' token.
+        at java.xml/com.sun.org.apache.xpath.internal.compiler.XPathParser.error(XPathParser.java:644) ~[na:na]
+        at java.xml/com.sun.org.apache.xpath.internal.compiler.XPathParser.Step(XPathParser.java:1737) ~[na:na]
+        at java.xml/com.su
 
 
 
-Currency Conversion  :         http://localhost:8100/currency-conversion/from/AUR/to/INR/quantity/5
-Currency Exchange    :		http://localhost:8000/currency-exchange/from/AUR/to/INR
-Currency Echange     :		http://localhost:8001/currency-exchange/from/AUR/to/INR
+
+
+package com.rbs.bdd.application.service;
+
+
+import com.rbs.bdd.application.exception.SchemaValidationException;
+import com.rbs.bdd.application.port.out.AccountValidationPort;
+import com.rbs.bdd.domain.enums.AccountStatus;
+import com.rbs.bdd.domain.enums.ModulusCheckStatus;
+import com.rbs.bdd.domain.enums.SwitchingStatus;
+import com.rbs.bdd.generated.*;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.lang.Exception;
+import java.util.UUID;
+import java.util.Optional;
+
+/**
+ *  Service class responsible for validating SOAP schema and applying business rules
+ *  based on identifier and code value in the incoming SOAP request.
+ *  This class reads a  SOAP response XML template, modifies specific fields
+ *  based on matched scenarios, and returns the updated SOAP message as a response.
+ *  Business rule scenarios include determining account status, switching status,
+ *  and modulus check result based on the request parameters like identifier and code value.
+ */
+@Service @RequiredArgsConstructor public class AccountValidationService implements AccountValidationPort {
+    private static final Logger logger = LoggerFactory.getLogger(AccountValidationService.class);
+
+    /**
+
+     The schema validation is done by  Spring WS configuration. No implementation is required.
+     @param request the SOAP request to validate */
+    @Override public void validateSchema(ValidateArrangementForPaymentRequest request)
+    {
+        logger.info("Schema validation completed (handled by Spring WS interceptor)");
+    }
+
+    /**
+     Loads the  SOAP response XML, evaluates request parameters, applies business rules,
+     modifies relevant response fields, and writes the final SOAP response back.
+     @param request the incoming SOAP request
+     @param message the SOAP WebServiceMessage to write the modified response to
+     */
+    @Override public void validateBusinessRules(ValidateArrangementForPaymentRequest request, WebServiceMessage message) { try { InputStream xml = getClass().getClassLoader().getResourceAsStream("static-response/response1.xml"); if (xml == null) throw new SchemaValidationException("response1.xml not found");
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(xml);
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        RequestParams params = extractRequestDetails(request);
+        determineResponseConfig(params).ifPresent(config -> {
+            try {
+                applyResponse(doc, xpath, config);
+            } catch (Exception e) {
+                throw new SchemaValidationException("Failed to apply response config", e);
+            }
+        });
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(out));
+
+        ((SaajSoapMessage) message).getSaajMessage().getSOAPPart()
+                .setContent(new StreamSource(new ByteArrayInputStream(out.toByteArray())));
+    }
+    catch (Exception e)
+    {
+        logger.error("Error in validateBusinessRules: {}", e.getMessage(), e);
+        throw new SchemaValidationException("Business rule processing failed", e);
+    }
+    }
+
+
+    /**
+     Extracts identifier, codeValue, and digit count from the request.
+     @param request the incoming SOAP request
+     @return a structured {@code RequestParams} record */
+    private RequestParams extractRequestDetails(ValidateArrangementForPaymentRequest request)
+    {
+        String identifier = request.getArrangementIdentifier().getIdentifier();
+        String codeValue = request.getArrangementIdentifier().getContext().getCodeValue();
+        int length = identifier != null ? identifier.length() : 0;
+        return new RequestParams(identifier, codeValue, length);
+    }
+
+
+    /**
+     Determines which business rule scenario applies based on the input parameters.
+     @param params the structured input parameters from request
+     @return {@code Optional} containing the response field values to apply */
+    private Optional<ResponseConfig> determineResponseConfig(RequestParams params)
+    {
+        String id = params.identifier();
+        int len = params.numberOfDigits();
+        String code = params.codeValue();
+        logger.info("the code value :"+code);
+        logger.info("the id value :"+id);
+
+        if ((len == 22 &&  code.equals("InternationalBankAccountNumber") && id.equals("GB29NWBK60161331926801"))
+                || (len == 8 && code.equals("UKBasicBankAccountNumber") &&  id.equals("31926801")))
+        {
+            logger.info("Matched: Scenario 1");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_RESTRICTED, SwitchingStatus.SWITCHED, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 &&  code.equals("InternationalBankAccountNumber") && id.equals("GB82WEST12345698765437"))
+                || (len == 8 && code.equals("UKBasicBankAccountNumber") &&  id.equals("98765437")))
+        {
+            logger.info("Matched: Scenario 2");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_RESTRICTED, SwitchingStatus.NOT_SWITCHING, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 &&  code.equals("InternationalBankAccountNumber") && id.equals("GB94BARC10201530093422"))
+                || (len == 8 &&  code.equals("UKBasicBankAccountNumber") &&   id.equals("30093422")))
+        {
+            logger.info("Matched: Scenario 3");
+            return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_UNRESTRICTED, SwitchingStatus.SWITCHED, ModulusCheckStatus.PASS));
+        }
+        else if ((len == 22 &&  code.equals("InternationalBankAccountNumber") &&  id.equals("GB33BUKB20201555555567"))
+                || (len == 14 && code.equals("UKBasicBankAccountNumber") && id.equals("55555567")))
+        {
+            logger.info("Matched: Scenario 4"); return Optional.of(new ResponseConfig(AccountStatus.DOMESTIC_UNRESTRICTED, SwitchingStatus.NOT_SWITCHING, ModulusCheckStatus.FAILED)); }
+
+        return Optional.empty();
+    }
 
 
 
+    /**
+     Applies the values from {@code ResponseConfig} to the response XML DOM using XPath.
+     @param doc the response XML DOM
+     @param xpath the XPath engine
+     @param config the configuration containing status values to apply
+     @throws Exception in case of XPath or DOM issues  */
+     private void applyResponse(Document doc, XPath xpath, ResponseConfig config) throws Exception
+     {
+         logger.info("coming here");
+         set(xpath, doc, "//[local-name()='transactionId']", generateTransactionId());
+         set(xpath, doc, "//[local-name()='accountingUnits']/[local-name()='status']/[local-name()='codeValue']", config.status().getValue());
+        set(xpath, doc, "//[local-name()='switchingStatus']/[local-name()='codeValue']", config.switching().getValue());
+         set(xpath, doc, "//[local-name()='modulusCheckStatus']/*[local-name()='codeValue']", config.modulus().getValue());
+         logger.info("going here");
 
-Currency Conversion  :         http://localhost:8765/currency-conversion/from/AUR/to/INR/quantity/5
-Currency Exchange    :		http://localhost:8765/currency-exchange/from/AUR/to/INR
-Currency Echange     :		http://localhost:8765/currency-exchange/from/AUR/to/INR
-
-Eureka Server:       : 		http://localhost:8762/
+     }
 
 
+     /**
+     Helper method to update the content of a node selected via XPath.
+     @param xpath the XPath instance
+     @param doc the DOM document
+     @param expr the XPath expression to locate the node
+     @param value the new text content to set
+     @throws Exception in case of evaluation failure */
+    private void set(XPath xpath, Document doc, String expr, String value) throws Exception
+    {
+        Node node = (Node) xpath.evaluate(expr, doc, XPathConstants.NODE);
+        if (node != null) node.setTextContent(value);
+    }
 
 
+    /**
+     Generates a random transaction ID based on UUID, formatted with required prefix and suffix.
+     @return a 40+ character transaction ID string */
+    private String generateTransactionId()
+    {
+        return "3flS" + UUID.randomUUID().toString().replace("-", "") + "h";
+    }
+
+
+    /**
+     Immutable record representing request fields to evaluate rules.
+     @param identifier the IBAN/account number
+     @param codeValue the account type
+     @param numberOfDigits length of the identifier */
+    private record RequestParams(String identifier, String codeValue, int numberOfDigits)
+    {
+
+    }
+    /**
+
+     Immutable record representing business rule results to apply in the SOAP response.
+     @param status the {@link AccountStatus} to set
+     @param switching the {@link SwitchingStatus} to set
+     @param modulus the {@link ModulusCheckStatus} to set */
+    private record ResponseConfig(AccountStatus status, SwitchingStatus switching, ModulusCheckStatus modulus) {
+
+    }
+}
